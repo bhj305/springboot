@@ -69,5 +69,32 @@ public class MainController
 		return "member/result";
 	}
 	
+	@RequestMapping("/memberLogin.do")
+	public String memberLogin() {
+		return "member/login";
+	}
+//	퀴즈] 로그인 결과 확인 방법 1
+	@RequestMapping("/loginProcess.do")
+	public String loginProcess(QuizVO quizVO) {
+		return "member/loginResult";
+	}
+	
+//	퀴즈] 로그인 결과 확인 방법 2
+//	@RequestMapping("/loginProcess.do")
+//	public String loginProcess(HttpServletRequest req, Model model) {
+//		
+//		String id = req.getParameter("id");
+//		String passwd = req.getParameter("passwd");
+//	
+//		
+//		QuizVO quizVO = new QuizVO();
+//		quizVO.setId(id);
+//		quizVO.setPasswd(passwd);
+//		
+//		model.addAttribute("quizVO", quizVO);
+//	
+//		return "member/loginResult2";
+//	}
+	
 	
 }

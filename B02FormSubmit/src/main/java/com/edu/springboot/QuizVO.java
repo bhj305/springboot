@@ -4,6 +4,7 @@ public class QuizVO
 {
 	private String id;
 	private String pass1;
+	private String passwd;
 	private String name;
 	private String sex;
 	private String email1;
@@ -22,6 +23,14 @@ public class QuizVO
 	
 //	getter/ setter 생성
 	
+	public String getPasswd()
+	{
+		return passwd;
+	}
+	public void setPasswd(String passwd)
+	{
+		this.passwd = passwd;
+	}
 	public String getId()
 	{
 		return id;
