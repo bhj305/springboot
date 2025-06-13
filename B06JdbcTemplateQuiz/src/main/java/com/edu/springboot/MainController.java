@@ -54,12 +54,13 @@ public class MainController
 		if(result == 1) System.out.println("수정되었습니다.");
 		return "redirect:list.do";
 	}
-	
+
 	@RequestMapping("/delete.do")
 	public String member4(MemberDTO memberDTO) {
 		int result = dao.delete(memberDTO);
 		if(result == 1) System.out.println("삭제되었습니다.");
 		return "redirect:list.do";
 	}
+	
 	
 }

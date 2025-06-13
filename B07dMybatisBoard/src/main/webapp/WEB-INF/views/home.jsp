@@ -9,17 +9,15 @@
 		<title>home</title>
 	</head>
 	<body>
-		<h2>스프링 부트 프로젝트</h2>
+		<h2>스프링 부트 프로젝트 - Mybatis 게시판</h2>
 		<ul>
 			<li><a href="/">루트</a></li>
 		</ul>
-		<h2>JdbcTemplate으로 구현한 회원관리</h2>
+		
+		<h2>Mybatis로 구현한 게시판</h2>
 		<ul>
-			<li><a href="./list.do">회원목록</a>
-				<ul>
-					<li><a href="./regist.do">회원등록</a></li>
-				</ul>			
-			</li>
+			<li><a href="./list.do">게시판목록</a></li>
 		</ul>
+		
 	</body>
 </html>

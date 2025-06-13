@@ -80,6 +80,7 @@ public class MemberDAO implements IMemberService
 		});
 		return result;
 	}
+
 // 	회원삭제
 	@Override
 	public int delete(MemberDTO memberDTO)
@@ -88,6 +89,7 @@ public class MemberDAO implements IMemberService
 		int result = jdbcTemplate.update(sql, new Object[] {memberDTO.getId()});
 		return result;
 	}
+	
 	
 	
 }

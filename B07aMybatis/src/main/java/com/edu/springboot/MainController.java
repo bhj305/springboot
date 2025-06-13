@@ -1,12 +1,15 @@
 package com.edu.springboot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.edu.springboot.jdbc.IMemberService;
 import com.edu.springboot.jdbc.MemberDTO;
@@ -32,6 +35,7 @@ public class MainController
 	public String member1() {
 		return "regist";
 	}
+	
 //	@RequestMapping(value = "/regist.do", method = RequestMethod.POST)
 	@PostMapping("/regist.do")
 	public String member6(MemberDTO memberDTO) {
@@ -55,11 +59,26 @@ public class MainController
 		return "redirect:list.do";
 	}
 	
-	@RequestMapping("/delete.do")
-	public String member4(MemberDTO memberDTO) {
-		int result = dao.delete(memberDTO);
-		if(result == 1) System.out.println("삭제되었습니다.");
-		return "redirect:list.do";
-	}
+//	@RequestMapping("/delete.do")
+//	public String member4(MemberDTO memberDTO) {
+//		int result = dao.delete(memberDTO);
+//		if(result == 1) System.out.println("삭제되었습니다.");
+//		return "redirect:list.do";
+//	}
 	
+	@RequestMapping("/delete.do")
+	@ResponseBody
+	public Map<String, String> member4(MemberDTO memberDTO) {
+		int result = dao.delete(memberDTO);
+		
+		Map<String, String> map = new HashMap<>();
+		if(result == 1) {
+			System.out.println("삭제 되었습니다.");
+			map.put("result", "success");
+		}else {
+			System.out.println("삭제 실패하였습니다..");
+			map.put("result", "fail");
+		}
+		return map;
+	}
 }

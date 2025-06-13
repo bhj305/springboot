@@ -1,0 +1,86 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>list</title>
+		
+	</head>
+	
+	<script>
+	let deletePost = function(user_id){
+		let frm = document.frm;
+		if(confirm("정말 삭제할까요?")){
+			frm.id.value = user_id;
+			frm.action = "delete.do";
+			frm.method = "post";
+			frm.submit();
+		}
+	}
+	</script>
+	<!-- jquery CDM(google) 추가 -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<body>
+	<script>
+	function validateForm(fm){
+		let sFieldCnt = 0;
+		for(let i=0 ; i< fm.searchField.length; i++){
+			if(fm.searchField[i].checked == true)
+				sFieldCnt++;
+		}
+		if(sFieldCnt == 0){
+			alert("한개 이상의 항목을 체크하셔야 합니다.")
+			return false;
+		}
+	}
+	</script>
+		<h2>회원리스트</h2>
+		<form onsubmit="return validateForm(this)">
+			<table>
+				<tr>
+					<td>
+						<input type="checkbox" name="searchField" value="id"/>아이디
+						<input type="checkbox" name="searchField" value="name"/>이름
+						<input type="checkbox" name="searchField" value="pass"/>패스워드
+						<input type="text" name="searchKeyword"/>
+						<input type="submit" value="검색"/>
+					</td>
+				</tr>
+			</table>
+		</form>
+		
+		<form name="frm">
+			<input type="hidden" name="id">
+		
+		</form>
+		
+		<table border="1">
+			<tr>
+				<th>아이디</th>
+				<th>패스워드</th>
+				<th>이름</th>
+				<th>가입일</th>
+				<th></th>
+			</tr>
+			<c:forEach items="${memberList }" var="row" varStatus="loop">
+			<tr id="member_${row.id }">
+				<td>${ row.id }</td>
+				<td>${ row.pass }</td>
+				<td>${ row.name }</td>
+				<td>${ row.regidate }</td>
+				<td>
+					<a href="edit.do?id=${row.id }">수정</a>
+					<%-- <a href="delete.do?id=${row.id }">삭제</a> --%>
+					<a href="javascript:;" onclick="deletePost('${row.id}')">삭제</a>
+					<%-- <a href="javascript:;ajaxDelete('${row.id}')">삭제</a> --%>
+				</td>
+			</tr>
+			</c:forEach>
+		</table>
+		
+		<a href="regist.do">회원등록</a>
+	</body>
+</html>
