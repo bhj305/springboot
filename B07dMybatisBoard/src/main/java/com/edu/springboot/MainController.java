@@ -8,6 +8,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.edu.springboot.jdbc.BoardDTO;
@@ -57,6 +59,54 @@ public class MainController
 		
 		return "list";
 				
+	}
+	@GetMapping("/write.do")
+	public String boardWriteGet(Model model) {
+		return "write";
+	}
+	
+	@PostMapping("/write.do")
+	public String boardWritePost(Model model, HttpServletRequest req) {
+		String name = req.getParameter("name");
+		String title = req.getParameter("title");
+		String content = req.getParameter("content");
+		
+		int result = dao.write(name, title, content);
+//		System.out.println("글쓰기 결과: " + result); // 디버깅 확인용, 확인후 주석 or 삭제 
+		
+		return "redirect:list.do"; // 서비스 인터페이스 호출
+	}
+	
+	@RequestMapping("/view.do")
+	public String boardView(Model model, BoardDTO boardDTO) {
+		boardDTO = dao.view(boardDTO);
+		boardDTO.setContent(boardDTO.getContent().replace("\r\n", "<br/>"));
+		model.addAttribute("boardDTO", boardDTO);
+		return "view";
+	}
+	
+//	수정 1: 기존 내용 읽어오기
+	@GetMapping("/edit.do")
+	public String boardEditGet(Model model, BoardDTO boardDTO) {
+		boardDTO = dao.view(boardDTO);
+		model.addAttribute("boardDTO", boardDTO);
+		
+		return "edit";
+	}
+//	수정 내용 전송
+	@PostMapping("edit.do")
+	public String boardEditPost(BoardDTO boardDTO) {
+		int result = dao.edit(boardDTO);
+//		System.out.println("글 수정 결과=" + result);
+		
+		return "redirect:view.do?idx=" + boardDTO.getIdx();
+	}
+	@PostMapping("/delete.do")
+	public String boardDeletePost(HttpServletRequest req) {
+		int result = dao.delete(req.getParameter("idx"));
+		System.out.println("글삭제 결과: "+ result);
+		
+		return "redirect:list.do"; 
 	}
 	
 }

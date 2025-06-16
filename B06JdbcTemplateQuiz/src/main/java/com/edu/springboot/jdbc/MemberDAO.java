@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -20,9 +21,18 @@ public class MemberDAO implements IMemberService
 	private JdbcTemplate jdbcTemplate;
 //	회원조회
 	@Override
-	public List<MemberDTO> select()
+	public List<MemberDTO> select(Map<String, Object> map)
 	{
-		String sql = " SELECT * FROM member ORDER BY regidate DESC ";
+		String sql = " SELECT * FROM member  ";
+		
+		if(map.get("searchKeyword") != null) {
+			sql += " WHERE " + map.get("searchField") 
+			+ " LIKE '%" + map.get("searchKeyword") + "%' ";
+		}
+		
+		sql += "ORDER BY regidate DESC";
+		System.out.println(sql);
+		
 		return jdbcTemplate.query(sql, 
 				new BeanPropertyRowMapper<MemberDTO>(MemberDTO.class)); // BeanPropertyRowMapper: 자동으로 MemberDTO에 저장해줌. 
 	}
@@ -80,7 +90,6 @@ public class MemberDAO implements IMemberService
 		});
 		return result;
 	}
-
 // 	회원삭제
 	@Override
 	public int delete(MemberDTO memberDTO)
@@ -89,7 +98,6 @@ public class MemberDAO implements IMemberService
 		int result = jdbcTemplate.update(sql, new Object[] {memberDTO.getId()});
 		return result;
 	}
-	
 	
 	
 }

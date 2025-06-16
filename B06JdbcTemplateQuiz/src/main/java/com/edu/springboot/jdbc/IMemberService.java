@@ -1,16 +1,17 @@
 package com.edu.springboot.jdbc;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-// Controller 와 DAO 사이에서 매개 역할을 하는 인터페이스로 DAO 클래스의 부모 역할을 함.
+//DAO의 부모 역할을 함
 @Service
 public interface IMemberService
 {
 	// 추상 매서드가 있어야 함
 	public int insert(MemberDTO memberDTO); // 회원정보추가
-	public List<MemberDTO> select(); // 회원목록
+	public List<MemberDTO> select(Map<String, Object> map); // 회원목록
 	public MemberDTO selectOne(MemberDTO memberDTO);
 	public int update(MemberDTO memberDTO);
 	public int delete(MemberDTO memberDTO);

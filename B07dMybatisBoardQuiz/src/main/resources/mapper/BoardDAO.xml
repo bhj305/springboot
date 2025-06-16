@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.springboot.jdbc.IBoardService">
+
+	<select id="getTotalCount" resultType="int" 
+		parameterType="com.edu.springboot.jdbc.ParameterDTO">
+		SELECT COUNT(*) FROM myboard
+		<if test="searchKeyword!=null and !searchKeyword.equals('')">
+			WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
+		</if>
+	</select>
+	
+	<select id="listPage" 
+		resultType="com.edu.springboot.jdbc.BoardDTO"
+		parameterType="com.edu.springboot.jdbc.ParameterDTO">
+		
+		SELECT * FROM (
+			SELECT Tb.*, rownum rNum FROM (
+				SELECT * FROM myboard
+				<if test="searchKeyword!=null and !searchKeyword.equals('')">
+					WHERE ${searchField} LIKE '%'||#{searchKeyword}||'%'
+				</if>
+				ORDER BY idx DESC
+			)Tb
+		)
+		WHERE rNum<![CDATA[>=]]>#{start} AND rNum<![CDATA[<=]]>#{end}
+		<!-- WHERE rNum BETWEEN #{start} AND #{end} -->
+	</select>
+	
+	<insert id="write">
+		INSERT INTO myboard (idx, name, title, content)
+		VALUES
+		(SEQ_BOARD_NUM.nextval, #{_name}, #{_title}, #{_content})
+	</insert>
+	
+	<!-- 게시물의 일련번호를 DTO를 통해 받은 훟 select 하고, 결과를 다시 DTO에 저장 후 반환한다 -->
+	<select id="view" resultType="com.edu.springboot.jdbc.BoardDTO"
+		parameterType="com.edu.springboot.jdbc.BoardDTO">
+		SELECT * FROM myboard WHERE idx=#{idx}
+	</select>
+	
+	<!-- update 쿼리문의 실행결과는 정수이므로 resultType 생략, 폼값전체를 저장한 DTO 객체를 parameterType으로 설정한다. -->
+	<update id="edit" parameterType="com.edu.springboot.jdbc.BoardDTO">
+		UPDATE myboard SET
+		name=#{name}, title=#{title}, content=#{content}
+		WHERE idx=#{idx}
+	</update>
+	
+	<!-- 방문자수 카운트 -->
+	<update id="visitCountPlus" parameterType="com.edu.springboot.jdbc.BoardDTO">
+		UPDATE myboard SET
+		<!-- visitcount=#{visitcount+1} // 단순하게 조회수를 +1 증가해주기 때문에 #{} 사용하지 마슈.-->
+		visitcount=visitcount+1
+		
+		WHERE idx=#{idx}
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="delete">
+		DELETE FROM myboard WHERE idx=#{param1}
+	</delete>
+	
+</mapper>

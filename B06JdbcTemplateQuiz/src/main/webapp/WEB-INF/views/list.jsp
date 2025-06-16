@@ -10,7 +10,22 @@
 	</head>
 	<body>
 		<h2>회원리스트</h2>
-		
+		<!-- 검색 폼 -->
+	    <form method="get">  
+	    <table border="1">
+	    <tr>
+	        <td align="center">
+	            <select name="searchField">
+	                <option value="id">아이디</option>
+	                <option value="name">이름</option>
+	            </select>
+	            <input type="text" name="searchKeyword" />
+	            <input type="submit" value="검색하기" />
+	        </td>
+	    </tr>
+	    </table>
+	    </form>
+	    
 		<table border="1">
 			<tr>
 				<th>아이디</th>
